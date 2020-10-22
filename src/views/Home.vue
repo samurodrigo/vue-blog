@@ -1,18 +1,35 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <blog-card
+      v-for="(post, index) in posts"
+      :key="index"
+      :blog-post="post"
+    ></blog-card>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
+// import HelloWorld from '@/components/HelloWorld.vue';
+import client from '@/services/contentfulClient.js';
+import BlogCard from '@/components/BlogCard.vue';
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
-    HelloWorld
-  }
+    // HelloWorld,
+    BlogCard,
+  },
+  data() {
+    return {
+      posts: [],
+    };
+  },
+  mounted() {
+    //console.log(client);
+    client.getBlogPosts().then((posts) => {
+      this.posts = posts.items;
+      console.log(this.posts);
+    });
+  },
 };
 </script>
